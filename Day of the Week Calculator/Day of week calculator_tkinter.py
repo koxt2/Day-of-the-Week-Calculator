@@ -4,7 +4,7 @@
 from tkinter import *
 from tkinter.ttk import *
 
-##### Create root window and a frame in the window #####
+##### Create root window, a frame in the window and a grid to place widegets #####
 root = Tk()
 root.title("Day of the Week Calculator")
 root.geometry("800x300")
@@ -33,13 +33,13 @@ month_value={   "January":13,
                 "November:":11,
                 "December":12}
 
-##### Get date (day,month,year) #####
+##### Get date (day,month,year) and perform calculation #####
 def selected_day(event):
     global q
     q = int(combo_day.get())
 
 def selected_month(event):
-    global m, month
+    global m
     m = int(month_value[combo_month.get()])
 
 def selected_year(event):
@@ -61,19 +61,15 @@ def selected_year(event):
     k = int(year%100)
     j = int(year//100)
 
-##### Check input is valid and perform calculation #####
 def calculation():
     if m in (4,6,9,11) and q not in range(1,31):
-        output_text=("This date is invalid. You can't have", q, "days in that month")
+        output_text=("This date is invalid. You can't have", q, "days in", combo_month.get())
         invalid_date = Label(frame, text=output_text).grid(row=3, column=2)
-    elif m in (3,5,7,8,10,12,13) and q not in range(1,32):
-        invalid_date = Label(frame, text="This date is invalid. You can't have days in march").grid(row=3,column=2)
     elif leap == False and m == 14 and q not in range(1,29):
         invalid_date = Label(frame, text="This date is invalid. You can only have up to 28 days in February").grid(row=3, column=2)
     elif leap == True and m == 14 and q not in range(1,30):
         invalid_date = Label(frame, text="This date is invalid. Even though it's a leap year you can only have up to 29 days in February").grid(row=3, column=2)            
     elif year_input == 1752 and m == 9 and q in range(3,14):
-        invalid_date_jul_greg = True
         lbl_invalid_date_jul_greg = Label(frame, text="This date is invalid. When Britain, Ireland and the colonies switched from the Julian calendar to the Gregorian calendar they went to bed on the 3rd September 1752 and woke up on the 14th September!").grid(row=3, column=2)
     else:
         if year_input <=1752 and m >= 9 and q <3:
