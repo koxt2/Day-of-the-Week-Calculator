@@ -12,17 +12,14 @@ frame = Frame(root)
 frame.grid()
 
 ##### Create labels #####
-lbl_question = Label(frame, text="Please enter the date in the boxes below...")
-lbl_question.grid(row=0, column=0, padx=10, pady=10)
+lbl_day = Label(frame, text="Day")
+lbl_day.grid(row=1, column=0, padx=20)
 
-lbl_day = Label(frame, text="Day", width=10)
-lbl_day.grid(row=1, column=0)
+lbl_month = Label(frame, text="Month")
+lbl_month.grid(row=1, column=1, padx=20)
 
-lbl_month = Label(frame, text="Month", width=10)
-lbl_month.grid(row=1, column=1)
-
-lbl_year = Label(frame, text="Year", width=10)
-lbl_year.grid(row=1, column=2)
+lbl_year = Label(frame, text="Year")
+lbl_year.grid(row=1, column=2, padx=20)
 
 ##### Get date (day,month,year) #####
 #Get day
@@ -95,11 +92,11 @@ def leap_year():
     else:
         leap = False
 
-#Is it a valid date?
+##### Final calculation #####
 def valid_date():
     global invalid_date_jul_greg
     if m in (4,6,9,11) and q not in range(1,31):
-        output_text="This date is invalid. You can't have", q, "days in april"
+        output_text=("This date is invalid. You can't have", q, "days in that month")
         invalid_date = Label(frame, text=output_text).grid(row=3, column=2)
     elif m in (3,5,7,8,10,12,13) and q not in range(1,32):
         invalid_date = Label(frame, text="This date is invalid. You can't have days in march").grid(row=3,column=2)
@@ -107,29 +104,26 @@ def valid_date():
         invalid_date = Label(frame, text="This date is invalid. You can only have up to 28 days in February").grid(row=3, column=2)
     elif leap == True and m == 14 and q not in range(1,30):
         invalid_date = Label(frame, text="This date is invalid. Even though it's a leap year you can only have up to 29 days in February").grid(row=3, column=2)            
-    if year_input == 1752 and m == 9 and q in range(3,14):
+    elif year_input == 1752 and m == 9 and q in range(3,14):
         invalid_date_jul_greg = True
         lbl_invalid_date_jul_greg = Label(frame, text="This date is invalid. When Britain, Ireland and the colonies switched from the Julian calendar to the Gregorian calendar they went to bed on the 3rd September 1752 and woke up on the 14th September!").grid(row=3, column=2)
     else:
-       invalid_date_jul_greg = False
+        day_key={   0:"Saturday",
+                    1:"Sunday",
+                    2:"Monday",
+                    3:"Tuesday",
+                    4:"Wednesday",
+                    5:"Thursday",
+                    6:"Friday"}
+        if year_input == 1752 and m == 9 and q <3:
+            day = day_key[(q + 13*(m+1)//5 + k + k//4 + 5 - j) %7]
+            print_result = Label(frame, text=day).grid(row=4, column=0)
+        else: 
+            day = day_key[(q + 13*(m+1)//5 + k + k//4 + j//4 - 2*j) %7]
+            print_result = Label(frame, text=day).grid(row=4, column=0)
 
-##### Final calculation #####
-def result():
-    day_key={  0:"Saturday",
-                1:"Sunday",
-                2:"Monday",
-                3:"Tuesday",
-                4:"Wednesday",
-                5:"Thursday",
-                6:"Friday"}
-    if year_input == 1752 and m == 9 and q <3:
-        day = day_key[(q + 13*(m+1)//5 + k + k//4 + 5 - j) %7]
-        print_result = Label(frame, text=day).grid(row=4, column=0)
-    else: 
-        day = day_key[(q + 13*(m+1)//5 + k + k//4 + j//4 - 2*j) %7]
-        print_result = Label(frame, text=day).grid(row=4, column=0)
-     
-but_process_data = Button(frame, text="Process data", command=lambda:[calibrate_year(), leap_year(), valid_date(), result()]).grid(row=3, column=0)
+
+but_process_data = Button(frame, text="Process data", command=lambda:[calibrate_year(), leap_year(), valid_date()]).grid(row=2, column=3, padx=20)
 
 root.mainloop()
 
