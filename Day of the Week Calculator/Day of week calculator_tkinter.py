@@ -7,7 +7,7 @@ from tkinter.ttk import *
 
 
 
-#Create root window and a frame in the window
+##### Create root window and a frame in the window #####
 root = Tk()
 root.title("Day of the Week Calculator")
 root.geometry("800x300")
@@ -17,7 +17,7 @@ frame.grid()
 
 
 
-#Create labels
+##### Create labels #####
 lbl_question = Label(frame, text="Please enter the date in the boxes below...")
 lbl_question.grid(row=0, column=0, padx=10, pady=10)
 
@@ -32,7 +32,7 @@ lbl_year.grid(row=1, column=2)
 
 
 
-#Get date (day,month,year)
+##### Get date (day,month,year) #####
 #Get day
 def selected_day(event):
     global q
@@ -43,6 +43,7 @@ combo_day['values'] = list (range(1,32))
 combo_day.set("Choose a day")
 combo_day.grid(row=2, column=0)
 combo_day.bind("<<ComboboxSelected>>", selected_day)
+
 #Get month and determine month code
 month_code={"January":13,
             "February":14,
@@ -66,6 +67,7 @@ combo_month.grid(row=2, column=1)
 combo_month['values'] = list (month_code.keys())
 combo_month.set("Choose a month")
 combo_month.bind("<<ComboboxSelected>>", selected_month)
+
 #Get year
 def selected_year(event):
     global year_input
@@ -78,7 +80,7 @@ entry_year.bind("<KeyRelease>", selected_year)
 
 
 
-#Interpret inputs
+##### Process inputs #####
 #Leap year?
 def leap_year():
     global leap
@@ -93,9 +95,8 @@ def leap_year():
         leap = False
 
 
-
-#Calibrate inputs
-def calibrate_inputs():
+#Calibrate year
+def calibrate_year():
     global year
     global k
     global j 
@@ -105,7 +106,17 @@ def calibrate_inputs():
         year=int(year_input)
     k = int(year%100)
     j = int(year//100)
-    
+
+#Is it a valid date?
+#Does the date lie within the missing dates of the Julian-Gregorian transition?
+def jul_greg_missing_date():
+    global invalid_date_jul_greg
+    if year_input == 1752 and m == 9 and q in range(3,14):
+        invalid_date_jul_greg = True
+    else:
+        valid_date_jul_greg = False
+
+
 
 
 #Print inputs
@@ -125,27 +136,20 @@ def print_leap():
         lbl_not_leap = Label(frame, text="Not a Leap!").grid(row=3, column=3)
 
 def print_calibrated_year():
-    lbl_calibrated = Label(frame, text=year).grid(row=3, column=4)
-    lbl_calibrated = Label(frame, text=j).grid(row=4, column=4)
-    lbl_calibrated = Label(frame, text=k).grid(row=5, column=4)
+    lbl_calibrated_year = Label(frame, text=year).grid(row=3, column=4)
+    lbl_calibrated_year = Label(frame, text=j).grid(row=4, column=4)
+    lbl_calibrated_year = Label(frame, text=k).grid(row=5, column=4)
 
-but_process_data = Button(frame, text="Process data", command=lambda:[calibrate_inputs(), leap_year()]).grid(row=4, column=0)
-but_print_data = Button(frame, text="How inputted data", command=lambda:[print_day(), print_month(), print_year(), print_leap(), print_calibrated_year()]).grid(row=5, column=0)
+def print_invalid_date_jul_greg():
+    if invalid_date_jul_greg == True:
+        lbl_invalid_date_jul_greg(frame, text="This date is invalid. When Britain, Ireland and the colonies switched from the Julian calendar to the Gregorian calendar they went to bed on the 3rd September 1752 and woke up on the 14th September!").grid(row=3, column=5)
 
-#Test data
-
-
-#Validity of date
-    #Leap year?
+but_process_data = Button(frame, text="Process data", command=lambda:[calibrate_year(), leap_year(), jul_greg_missing_date()]).grid(row=4, column=0)
+but_print_data = Button(frame, text="How inputted data", command=lambda:[print_day(), print_month(), print_year(), print_leap(), print_calibrated_year(), print_invalid_date_jul_greg]).grid(row=5, column=0)
 
 
-    #Does the date lie within the missing dates of the Julian-Gregorian transition?
-#def jul_greg_missing_date():
- #   jul_greg_missing_date = Label(frame, text="This date is invalid. When Britain, Ireland and the colonies switched from the Julian calendar to the Gregorian calendar they went to bed on the 3rd September 1752 and woke up on the 14th September!")
-  #  jul_greg_missing_date.grid(row=5, column=0)
 
-#if year_input == 1752 and m == 9 and q in range(3,14):
- #   command=jul_greg_missing_date
+
 
 root.mainloop()
 """
@@ -157,6 +161,7 @@ day_code={  0:"Saturday",
             4:"Wednesday",
             5:"Thursday",
             6:"Friday"}
+
 
 
 
