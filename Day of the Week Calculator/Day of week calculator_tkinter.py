@@ -114,7 +114,19 @@ def jul_greg_missing_date():
     if year_input == 1752 and m == 9 and q in range(3,14):
         invalid_date_jul_greg = True
     else:
-        valid_date_jul_greg = False
+       invalid_date_jul_greg = False
+
+#Does the date lie within the given month?
+def valid_date():
+    if m in (4,6,9,11) and q not in range(1,31):
+        invalid_date = Label(frame, text="This date is invalid. You can't have days in april").grid(row=6, column=0)
+    elif m in (3,5,7,8,10,12,13) and q not in range(1,32):
+        invalid_date = Label(frame, text="This date is invalid. You can't have days in march").grid(row=6,column=0)
+    elif leap == False and m == 14 and q not in range(1,29):
+        invalid_date = Label(frame, text="This date is invalid. You can only have up to 28 days in February").grid(row=6, column=0)
+    elif leap == True and m == 14 and q not in range(1,30):
+        invalid_date = Label(frame, text="This date is invalid. Even though it's a leap year you can only have up to 29 days in February").grid(row=6, column=0)            
+
 
 
 
@@ -142,10 +154,10 @@ def print_calibrated_year():
 
 def print_invalid_date_jul_greg():
     if invalid_date_jul_greg == True:
-        lbl_invalid_date_jul_greg(frame, text="This date is invalid. When Britain, Ireland and the colonies switched from the Julian calendar to the Gregorian calendar they went to bed on the 3rd September 1752 and woke up on the 14th September!").grid(row=3, column=5)
+        lbl_invalid_date_jul_greg = Label(frame, text="This date is invalid. When Britain, Ireland and the colonies switched from the Julian calendar to the Gregorian calendar they went to bed on the 3rd September 1752 and woke up on the 14th September!").grid(row=3, column=5)
 
-but_process_data = Button(frame, text="Process data", command=lambda:[calibrate_year(), leap_year(), jul_greg_missing_date()]).grid(row=4, column=0)
-but_print_data = Button(frame, text="How inputted data", command=lambda:[print_day(), print_month(), print_year(), print_leap(), print_calibrated_year(), print_invalid_date_jul_greg]).grid(row=5, column=0)
+but_process_data = Button(frame, text="Process data", command=lambda:[calibrate_year(), leap_year(), jul_greg_missing_date(), valid_date()]).grid(row=4, column=0)
+but_print_data = Button(frame, text="How inputted data", command=lambda:[print_day(), print_month(), print_year(), print_leap(), print_calibrated_year(), print_invalid_date_jul_greg()]).grid(row=5, column=0)
 
 
 
@@ -172,16 +184,7 @@ day_code={  0:"Saturday",
 
 
 
-    #Does the date lie within the given month?
-if m in (4,6,9,11) and q not in range(1,31):
-    print("This date is invalid. You can't have", q, "days in", m)
-elif m in (3,5,7,8,10,12,13) and q not in range(1,32):
-    print("This date is invalid. You can't have", q, "days in", m)
-elif year_leap == False and m == 14 and q not in range(1,29):
-    print("This date is invalid. You can only have up to 28 days in February")
-elif year_leap == True and m == 14 and q not in range(1,30):
-    print("This date is invalid. Even though", year_input, "is a leap year you can only have up to 29 days in February")            
-
+   
 
 
 
