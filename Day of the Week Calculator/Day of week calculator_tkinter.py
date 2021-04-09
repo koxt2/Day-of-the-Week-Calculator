@@ -99,7 +99,8 @@ def leap_year():
 def valid_date():
     global invalid_date_jul_greg
     if m in (4,6,9,11) and q not in range(1,31):
-        invalid_date = Label(frame, text="This date is invalid. You can't have days in april").grid(row=3, column=2)
+        output_text="This date is invalid. You can't have", q, "days in april"
+        invalid_date = Label(frame, text=output_text).grid(row=3, column=2)
     elif m in (3,5,7,8,10,12,13) and q not in range(1,32):
         invalid_date = Label(frame, text="This date is invalid. You can't have days in march").grid(row=3,column=2)
     elif leap == False and m == 14 and q not in range(1,29):
