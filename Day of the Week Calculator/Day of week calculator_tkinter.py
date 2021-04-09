@@ -34,6 +34,8 @@ lbl_year.grid(row=1, column=2)
 
 ##### Get date (day,month,year) #####
 #Get day
+
+
 def selected_day(event):
     global q
     q = int(combo_day.get())
@@ -127,7 +129,23 @@ def valid_date():
     elif leap == True and m == 14 and q not in range(1,30):
         invalid_date = Label(frame, text="This date is invalid. Even though it's a leap year you can only have up to 29 days in February").grid(row=6, column=0)            
 
+#Final calculation
 
+def result():
+    day_code={  0:"Saturday",
+            1:"Sunday",
+            2:"Monday",
+            3:"Tuesday",
+            4:"Wednesday",
+            5:"Thursday",
+            6:"Friday"}
+    if year_input == 1752 and m == 9 and q <3:
+        day = day_code[(q + 13*(m+1)//5 + k + k//4 + 5 - j) %7]
+        #print("The day on", str(q) + "/" + str(m) + "/" + str(year_input), "is a", day)
+        print_result = Label(frame, text=day).grid(row=6, column=0)
+    else: 
+        day = day_code[(q + 13*(m+1)//5 + k + k//4 + j//4 - 2*j) %7]
+        print_result = Label(frame, text=day).grid(row=6, column=0)
 
 
 
@@ -156,7 +174,7 @@ def print_invalid_date_jul_greg():
     if invalid_date_jul_greg == True:
         lbl_invalid_date_jul_greg = Label(frame, text="This date is invalid. When Britain, Ireland and the colonies switched from the Julian calendar to the Gregorian calendar they went to bed on the 3rd September 1752 and woke up on the 14th September!").grid(row=3, column=5)
 
-but_process_data = Button(frame, text="Process data", command=lambda:[calibrate_year(), leap_year(), jul_greg_missing_date(), valid_date()]).grid(row=4, column=0)
+but_process_data = Button(frame, text="Process data", command=lambda:[calibrate_year(), leap_year(), jul_greg_missing_date(), valid_date(), result()]).grid(row=4, column=0)
 but_print_data = Button(frame, text="How inputted data", command=lambda:[print_day(), print_month(), print_year(), print_leap(), print_calibrated_year(), print_invalid_date_jul_greg()]).grid(row=5, column=0)
 
 
@@ -164,38 +182,5 @@ but_print_data = Button(frame, text="How inputted data", command=lambda:[print_d
 
 
 root.mainloop()
-"""
-#Day and month codes 
-day_code={  0:"Saturday",
-            1:"Sunday",
-            2:"Monday",
-            3:"Tuesday",
-            4:"Wednesday",
-            5:"Thursday",
-            6:"Friday"}
 
-
-
-
-
-
-
-
-
-
-
-   
-
-
-
-#Final calculation
-else:
-    if year_input == 1752 and m == 9 and q <3:
-        day = day_code[(q + 13*(m+1)//5 + k + k//4 + 5 - j) %7]
-        print("The day on", str(q) + "/" + str(m) + "/" + str(year_input), "is a", day)
-    else: 
-        day = day_code[(q + 13*(m+1)//5 + k + k//4 + j//4 - 2*j) %7]
-        print("The day on", str(q) + "/" + str(m) + "/" + str(year_input), "is a", day)
  
-"""
-
