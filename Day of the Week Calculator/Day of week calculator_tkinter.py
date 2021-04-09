@@ -8,7 +8,7 @@ from tkinter.ttk import *
 #Create root window and a frame in the window
 root = Tk()
 root.title("Day of the Week Calculator")
-root.geometry("600x300")
+root.geometry("800x300")
 frame = Frame(root)
 frame.grid()
 
@@ -53,8 +53,7 @@ month_code={"January":13,
 def selected_month(event):
     global m
     m = int(month_code[combo_month.get()])
-    return m
-    
+        
 combo_month = Combobox(frame)
 combo_month.grid(row=2, column=1)
 combo_month['values'] = list (month_code.keys())
@@ -65,8 +64,7 @@ combo_month.bind("<<ComboboxSelected>>", selected_month)
 def selected_year(event):
     global year_input
     year_input = int(entry_year.get())
-
-
+    
 entry_year = Entry(frame)
 entry_year.grid(row=2, column=2)
 entry_year.insert(0,"Choose a year") 
@@ -76,13 +74,14 @@ entry_year.bind("<KeyRelease>", selected_year)
 def calibrate_inputs():
     global year
     global k
-    global j
+    global j 
     if m in [13,14]:
         year=int(year_input-1)
     else:
         year=int(year_input)
     k = int(year%100)
     j = int(year//100)
+    lbl_calibrated = Label(frame, text=year).grid(row=4, column=3)
 
 #Print inputs
 def print_day():
@@ -93,9 +92,6 @@ def print_month():
 
 def print_year():
     lbl_year = Label(frame, text=year_input).grid(row=4, column=2)
-
-def print_calibraton():
-    lbl_calibrated = Label(frame, text=year).grid(row=4, column=3)
 
 but_day = Button(frame, text="Show day", command=print_day).grid(row=3, column=0)
 but_month = Button(frame, text="Show month", command=print_month).grid(row=3, column=1)
