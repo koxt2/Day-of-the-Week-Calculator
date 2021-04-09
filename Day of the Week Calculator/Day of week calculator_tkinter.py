@@ -94,6 +94,13 @@ def leap_year():
 
 ##### Final calculation #####
 def valid_date():
+    day_key={   0:"Saturday",
+                    1:"Sunday",
+                    2:"Monday",
+                    3:"Tuesday",
+                    4:"Wednesday",
+                    5:"Thursday",
+                    6:"Friday"}
     global invalid_date_jul_greg
     if m in (4,6,9,11) and q not in range(1,31):
         output_text=("This date is invalid. You can't have", q, "days in that month")
@@ -108,14 +115,7 @@ def valid_date():
         invalid_date_jul_greg = True
         lbl_invalid_date_jul_greg = Label(frame, text="This date is invalid. When Britain, Ireland and the colonies switched from the Julian calendar to the Gregorian calendar they went to bed on the 3rd September 1752 and woke up on the 14th September!").grid(row=3, column=2)
     else:
-        day_key={   0:"Saturday",
-                    1:"Sunday",
-                    2:"Monday",
-                    3:"Tuesday",
-                    4:"Wednesday",
-                    5:"Thursday",
-                    6:"Friday"}
-        if year_input == 1752 and m == 9 and q <3:
+        if year_input <=1752 and m >= 9 and q <3:
             day = day_key[(q + 13*(m+1)//5 + k + k//4 + 5 - j) %7]
             print_result = Label(frame, text=day).grid(row=4, column=0)
         else: 
