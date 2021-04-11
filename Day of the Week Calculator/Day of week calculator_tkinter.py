@@ -34,15 +34,15 @@ month_value={   "January":13,
                 "December":12}
 
 ##### Get date (day,month,year) and perform calculation #####
-def selected_day(event):
+def select_day(event):
     global q
     q = int(combo_day.get())
 
-def selected_month(event):
+def select_month(event):
     global m
     m = int(month_value[combo_month.get()])
 
-def selected_year(event):
+def select_year(event):
     global year, year_input, k, j, leap
     year_input = int(entry_year.get())
     if m in [13,14]:
@@ -93,21 +93,21 @@ combo_day = Combobox(frame)
 combo_day['values'] = list (range(1,32))
 combo_day.set("Choose a day")
 combo_day.grid(row=2, column=0)
-combo_day.bind("<<ComboboxSelected>>", selected_day)
+combo_day.bind("<<ComboboxSelected>>", select_day)
 
 combo_month = Combobox(frame)
 combo_month.grid(row=2, column=1)
 combo_month['values'] = list (month_value.keys())
 combo_month.set("Choose a month")
-combo_month.bind("<<ComboboxSelected>>", selected_month)
+combo_month.bind("<<ComboboxSelected>>", select_month)
 
 entry_year = Entry(frame)
 entry_year.grid(row=2, column=2)
 entry_year.insert(0,"Choose a year") 
-entry_year.bind("<KeyRelease>", selected_year) 
+entry_year.bind("<KeyRelease>", select_year) 
 
 ##### Provide result #####
-but_process_data = Button(frame, text="Process data", command=lambda:[calculation()]).grid(row=2, column=3, padx=20)
+but_process_data = Button(frame, text="Process data", command=calculation).grid(row=2, column=3, padx=20)
 
 root.mainloop()
 
