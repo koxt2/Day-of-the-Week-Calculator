@@ -33,7 +33,7 @@ month_value={   "January":13,
                 "November:":11,
                 "December":12}
 
-##### Get date (day,month,year) and perform calculation #####
+##### Get date (day,month,year) #####
 def select_day(event):
     global q
     q = int(combo_day.get())
@@ -43,12 +43,20 @@ def select_month(event):
     m = int(month_value[combo_month.get()])
 
 def select_year(event):
-    global year, year_input, k, j, leap
-    year_input = int(entry_year.get())
+    global year_input
+    year_input = int(entry_year.get()) 
+    
+##### Calibrate input #####
+def calibrate_input():
+    global year, k, j, leap
     if m in [13,14]:
         year=int(year_input-1)
     else:
         year=int(year_input)
+
+    k = int(year%100)
+    j = int(year//100)
+    
     if (year_input%4) == 0:
         if (year_input%100) == 0:
             if (year_input%400) == 0:
@@ -57,11 +65,10 @@ def select_year(event):
         else:
             leap = True
     else:
-        leap = False    
-    k = int(year%100)
-    j = int(year//100)
+        leap = False
 
-def calculation():
+##### Test input #####
+def test_input():
     if m in (4,6,9,11) and q not in range(1,31):
         output_text=("This date is invalid. You can't have", q, "days in", combo_month.get())
         invalid_date = Label(frame, text=output_text).grid(row=3, column=2)
@@ -71,7 +78,9 @@ def calculation():
         invalid_date = Label(frame, text="This date is invalid. Even though it's a leap year you can only have up to 29 days in February").grid(row=3, column=2)            
     elif year_input == 1752 and m == 9 and q in range(3,14):
         lbl_invalid_date_jul_greg = Label(frame, text="This date is invalid. When Britain, Ireland and the colonies switched from the Julian calendar to the Gregorian calendar they went to bed on the 3rd September 1752 and woke up on the 14th September!").grid(row=3, column=2)
-    else:
+
+##### Perform calculation #####
+def calculation():
         if year_input <=1752 and m >= 9 and q <3:
             day = day_key[(q + 13*(m+1)//5 + k + k//4 + 5 - j) %7]
             print_result = Label(frame, text=day).grid(row=4, column=0)
@@ -107,7 +116,7 @@ entry_year.insert(0,"Choose a year")
 entry_year.bind("<KeyRelease>", select_year) 
 
 ##### Provide result #####
-but_process_data = Button(frame, text="Process data", command=calculation).grid(row=2, column=3, padx=20)
+but_process_data = Button(frame, text="Process data", command=lambda:[calibrate_input(), test_input(), calculation()]).grid(row=2, column=3, padx=20)
 
 root.mainloop()
 
