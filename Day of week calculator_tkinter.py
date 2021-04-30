@@ -98,6 +98,7 @@ lbl_month.grid(row=1, column=1, padx=20)
 lbl_year = Label(frame, text="Year")
 lbl_year.grid(row=1, column=2, padx=20)
 
+
 combo_day = Combobox(frame)
 combo_day['values'] = list (range(1,32))
 combo_day.set("Choose a day")
