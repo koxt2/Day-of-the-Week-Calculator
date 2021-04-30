@@ -1,4 +1,0 @@
-# Day of the week calculator
-# Using Zeller's congruence
-
-from tkinter import *
